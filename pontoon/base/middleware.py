@@ -78,7 +78,7 @@ class LoginRequiredMiddleware:
 
         return JsonResponse({
             'login_exempt': getattr(view_func, 'login_exempt', False),
-            request.user.is_authenticated,
+            'is_authenticated': request.user.is_authenticated,
             'LOGIN_REQUIRED': os.environ.get("LOGIN_REQUIRED", "False")
         })
 
