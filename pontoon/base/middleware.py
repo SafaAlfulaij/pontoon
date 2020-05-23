@@ -73,7 +73,7 @@ class LoginRequiredMiddleware:
         if request.user.is_authenticated:
             return
 
-        if not os.environ.get("REQUIRE_LOGIN", False):
+        if os.environ.get("LOGIN_REQUIRED", "False") == "False":
             return
 
         return auth.decorators.login_required(view_func)(request, *view_args, **view_kwargs)
