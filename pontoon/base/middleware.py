@@ -5,7 +5,7 @@ import os
 from django.conf import settings
 from django.contrib import auth
 from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponseForbidden
+from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.utils.deprecation import MiddlewareMixin
 from raygun4py.middleware.django import Provider
 
@@ -76,4 +76,11 @@ class LoginRequiredMiddleware:
         if os.environ.get("LOGIN_REQUIRED", "False") == "False":
             return
 
+        return JsonResponse({
+            'login_exempt': getattr(view_func, 'login_exempt', False),
+            request.user.is_authenticated,
+            'LOGIN_REQUIRED': os.environ.get("LOGIN_REQUIRED", "False")
+        })
+
         return auth.decorators.login_required(view_func)(request, *view_args, **view_kwargs)
+
