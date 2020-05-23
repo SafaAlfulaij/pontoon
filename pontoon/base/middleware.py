@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseForbidden, JsonResponse
+from django.shortcuts import redirect
 from django.utils.deprecation import MiddlewareMixin
 from raygun4py.middleware.django import Provider
 
@@ -82,5 +83,9 @@ class LoginRequiredMiddleware:
             #'LOGIN_REQUIRED': os.environ.get("LOGIN_REQUIRED", "False")
         #})
 
-        return auth.decorators.login_required(view_func)(request, *view_args, **view_kwargs)
+        if settings.AUTHENTICATION_METHOD == "django":
+            return redirect("/standalone-login/")
+        else:
+            return redirect("/login/")
+        #return auth.decorators.login_required(view_func)(request, *view_args, **view_kwargs)
 
