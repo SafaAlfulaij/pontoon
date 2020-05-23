@@ -58,10 +58,6 @@ class AutomaticLoginUserMiddleware(MiddlewareMixin):
 
 # https://stackoverflow.com/questions/48407790/
 
-# wrap view with this if it should bypass this conditon
-#def login_exempt(view):
-    #view.login_exempt = True
-    #return view
 
 class LoginRequiredMiddleware:
     def __init__(self, get_response):

@@ -541,3 +541,8 @@ def readonly_exists(projects, locale):
     return ProjectLocale.objects.filter(
         project__in=projects, locale=locale, readonly=True,
     ).exists()
+
+# wrap view with this if it should bypass the login required condition
+def login_exempt(view):
+    view.login_exempt = True
+    return view
