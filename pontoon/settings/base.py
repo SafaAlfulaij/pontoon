@@ -175,6 +175,7 @@ MIDDLEWARE = (
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "csp.middleware.CSPMiddleware",
     "pontoon.base.middleware.AutomaticLoginUserMiddleware",
+    "pontoon.base.middleware.LoginRequiredMiddleware",
 )
 
 CONTEXT_PROCESSORS = (

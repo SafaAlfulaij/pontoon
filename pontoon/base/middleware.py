@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
+import os
+
 from django.conf import settings
 from django.contrib import auth
 from django.core.exceptions import PermissionDenied
@@ -52,3 +54,30 @@ class AutomaticLoginUserMiddleware(MiddlewareMixin):
             if user:
                 request.user = user
                 auth.login(request, user)
+
+
+# https://stackoverflow.com/questions/48407790/
+
+# wrap view with this if it should bypass this conditon
+#def login_exempt(view):
+    #view.login_exempt = True
+    #return view
+
+class LoginRequiredMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        if getattr(view_func, 'login_exempt', False):
+            return
+
+        if request.user.is_authenticated:
+            return
+
+        if not os.environ.get("REQUIRE_LOGIN", False):
+            return
+
+        return auth.decorators.login_required(view_func)(request, *view_args, **view_kwargs)
