@@ -10,6 +10,7 @@
 
 .comments-list .comment-author {
     margin-right: 4px;
+    margin-left: 4px;
 }
 
 .comments-list .comment .content {
@@ -24,6 +25,14 @@
 
 .comments-list .comment .content p {
     color: #CCCCCC;
+}
+
+.comments-list .comment .content p span:before {
+    content: "\2068";
+}
+
+.comments-list .comment .content p span:after {
+    content: "\2069";
 }
 
 .comments-list .comment .info {
