@@ -68,11 +68,6 @@ class LoginRequiredMiddleware:
         return self.get_response(request)
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        path = request.path
-
-        resolver = resolve(path)
-        print(resolver.view_name)
-
         if getattr(view_func, 'login_exempt', False):
             return
 
@@ -82,13 +77,12 @@ class LoginRequiredMiddleware:
         if os.environ.get("LOGIN_REQUIRED", "False") == "False":
             return
 
-        if request.user.is_authenticated:
-            return
+        path = request.path
+        resolver = resolve(path)
 
-        if not resolver.view_name in ['LoginView']:
+        if not resolver.view_name in ['pontoon.homepage', 'standalone_login', 'standalone_logout']:
             return auth.views.redirect_to_login(
-                request.path,
-                "/accounts/standalone-login/"
+                path, "/accounts/standalone-login/"
             )
 
         return
