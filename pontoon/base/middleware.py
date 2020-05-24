@@ -68,6 +68,11 @@ class LoginRequiredMiddleware:
         return self.get_response(request)
 
     def process_view(self, request, view_func, view_args, view_kwargs):
+        path = request.path
+
+        resolver = resolve(path)
+        print(resolver.view_name)
+
         if getattr(view_func, 'login_exempt', False):
             return
 
@@ -77,11 +82,8 @@ class LoginRequiredMiddleware:
         if os.environ.get("LOGIN_REQUIRED", "False") == "False":
             return
 
-        path = request.path
         if request.user.is_authenticated:
             return
-
-        resolver = resolve(path)
 
         if not resolver.view_name in ['LoginView']:
             return auth.views.redirect_to_login(
