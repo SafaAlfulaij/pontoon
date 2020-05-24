@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseForbidden
+from django.urls import resolve
 from django.utils.deprecation import MiddlewareMixin
 from raygun4py.middleware.django import Provider
 
@@ -76,7 +77,13 @@ class LoginRequiredMiddleware:
         if os.environ.get("LOGIN_REQUIRED", "False") == "False":
             return
 
-        if settings.AUTHENTICATION_METHOD == "django":
+        path = request.path
+        if request.user.is_authenticated:
+            return
+
+        resolver = resolve(path)
+
+        if not resolver.view_name in ['LoginView']:
             return auth.views.redirect_to_login(
                 request.path,
                 "/accounts/standalone-login/"
