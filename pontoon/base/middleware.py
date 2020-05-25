@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import auth
 from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseForbidden
+from django.urls import resolve
 from django.utils.deprecation import MiddlewareMixin
 from raygun4py.middleware.django import Provider
 
@@ -76,4 +77,13 @@ class LoginRequiredMiddleware:
         if os.environ.get("LOGIN_REQUIRED", "False") == "False":
             return
 
-        return auth.decorators.login_required(view_func)(request, *view_args, **view_kwargs)
+        path = request.path
+        resolver = resolve(path)
+
+        if not resolver.view_name in ['pontoon.homepage', 'standalone_login', 'standalone_logout']:
+            return auth.views.redirect_to_login(
+                path, "/accounts/standalone-login/"
+            )
+
+        return
+

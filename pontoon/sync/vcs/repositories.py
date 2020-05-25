@@ -154,9 +154,9 @@ class CommitToGit(CommitToRepository):
         git_cmd = [
             "git",
             "-c",
-            "user.name=Mozilla Pontoon",
+            f"user.name={os.environ.get('SSH_FULL_NAME')}",
             "-c",
-            "user.email=pontoon@mozilla.com",
+            f"user.email={os.environ.get('SSH_EMAIL')}",
         ]
 
         # Add new and remove missing paths
