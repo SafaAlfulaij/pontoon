@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import os
 import json
 
 from django.contrib.auth.decorators import login_required
@@ -259,7 +260,7 @@ def request_item(request, locale=None):
         EmailMessage(
             subject=mail_subject,
             body=mail_body,
-            from_email="pontoon@mozilla.com",
+            from_email=os.environ.get('SSH_EMAIL'),
             to=settings.PROJECT_MANAGERS,
             cc=locale.managers_group.user_set.exclude(pk=user.pk).values_list(
                 "email", flat=True

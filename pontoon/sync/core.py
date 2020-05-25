@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import os
+
 from functools import wraps
 import logging
 import requests
@@ -351,7 +353,10 @@ def commit_changes(db_project, vcs_project, changeset, locale):
     if len(authors) > 0:
         commit_author = Counter(authors).most_common(1)[0][0]
     else:
-        commit_author = User(first_name="Mozilla Pontoon", email="pontoon@mozilla.com")
+        commit_author = User(
+            first_name=os.environ.get('SSH_FULL_NAME'),
+            email=os.environ.get('SSH_EMAIL')
+        )
 
     commit_message = render_to_string(
         "sync/commit_message.jinja",

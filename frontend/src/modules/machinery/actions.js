@@ -68,26 +68,26 @@ export function get(source: string, locale: Locale, pk: ?number): Function {
         api.machinery.getTranslationMemory(source, locale, pk)
         .then(results => dispatch(addTranslations(results)));
 
-        api.machinery.getGoogleTranslation(source, locale)
-        .then(results => dispatch(addTranslations(results)));
-
-        api.machinery.getMicrosoftTranslation(source, locale)
-        .then(results => dispatch(addTranslations(results)));
-
-        if (locale.msTerminologyCode) {
-            api.machinery.getMicrosoftTerminology(source, locale)
-            .then(results => dispatch(addTranslations(results)));
-        }
-
-        if (locale.transvision) {
-            api.machinery.getTransvisionMemory(source, locale)
-            .then(results => dispatch(addTranslations(results)));
-        }
-
-        if (locale.code === 'ga-IE' && pk) {
-            api.machinery.getCaighdeanTranslation(source, locale, pk)
-            .then(results => dispatch(addTranslations(results)));
-        }
+//         api.machinery.getGoogleTranslation(source, locale)
+//         .then(results => dispatch(addTranslations(results)));
+// 
+//         api.machinery.getMicrosoftTranslation(source, locale)
+//         .then(results => dispatch(addTranslations(results)));
+// 
+//         if (locale.msTerminologyCode) {
+//             api.machinery.getMicrosoftTerminology(source, locale)
+//             .then(results => dispatch(addTranslations(results)));
+//         }
+// 
+//         if (locale.transvision) {
+//             api.machinery.getTransvisionMemory(source, locale)
+//             .then(results => dispatch(addTranslations(results)));
+//         }
+// 
+//         if (locale.code === 'ga-IE' && pk) {
+//             api.machinery.getCaighdeanTranslation(source, locale, pk)
+//             .then(results => dispatch(addTranslations(results)));
+//         }
     }
 }
 
